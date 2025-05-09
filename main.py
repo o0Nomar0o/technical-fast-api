@@ -16,8 +16,7 @@ all = ["*"]
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex="https://o0nomar0o.github.io.*",
-    #allow_origins=all,
+    allow_origins=all,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
