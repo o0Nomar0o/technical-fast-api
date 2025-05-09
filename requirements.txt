@@ -7,3 +7,4 @@ google-genai
 pydantic~=2.11.4
 psycopg2~=2.9.10
 protobuf~=5.29.4
+python-multipart
