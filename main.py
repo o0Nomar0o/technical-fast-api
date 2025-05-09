@@ -16,7 +16,7 @@ all = ["*"]
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=all,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -29,8 +29,7 @@ class BlogCard(BaseModel):
     summary: str
 
 
-
-@app.get("/blogs")
+@app.get("/browse/")
 async def generate_blog():
 
     generated_blog = BlogCard(
