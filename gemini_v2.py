@@ -69,9 +69,7 @@ Only return properly formatted Markdown documentation commentary.
 Include examples with code blocks where appropriate)
 Follow the system_instruction, 1 to 5 strictly."""
 
-#add additional para to remember what to gen
-# proofreader ai
-# self-improvement recursive
+
 
 async def get_gemini_response(message: str) -> str:
     try:
@@ -79,7 +77,7 @@ async def get_gemini_response(message: str) -> str:
         final_message = (
             message
             + "\n\n"
-            + ""
+            + reminder
         )
 
         response = model.send_message_stream(final_message)
