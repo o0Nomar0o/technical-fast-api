@@ -63,6 +63,11 @@ model = client.chats.create(
         system_instruction = peaked_very_long_prompt_engineering)
 )
 
+reminder = """ 
+**Reminder:** Do not include self-critique, suggestions, or improvements. 
+Only return properly formatted Markdown documentation commentary.
+Include examples with code blocks where appropriate)
+Follow the system_instruction, 1 to 5 strictly."""
 
 #add additional para to remember what to gen
 # proofreader ai
@@ -74,7 +79,7 @@ async def get_gemini_response(message: str) -> str:
         final_message = (
             message
             + "\n\n"
-            + "**Reminder:** Do not include self-critique, suggestions, or improvements. Only return properly formatted Markdown documentation with no explanations or commentary. Remember the system_instruction."
+            + ""
         )
 
         response = model.send_message_stream(final_message)
