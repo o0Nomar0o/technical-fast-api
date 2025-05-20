@@ -4,6 +4,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import APIRouter, UploadFile, File
 from typing import List
+
+import gemini_v2
+
 from gemini import get_gemini_response
 
 
@@ -22,24 +25,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class BlogCard(BaseModel):
-    id: int
-    posted_by: str
-    title: str
-    summary: str
-
-
-@app.get("/blogs/")
-async def generate_blog():
-
-    generated_blog = BlogCard(
-        id=1,
-        posted_by="Eve",
-        title="Generated Title from ",
-        summary="This is a fake summary.",
-    )
-    return [generated_blog]
-
 
 @app.post("/files")
 async def upload_files(files: List[UploadFile] = File(...)):
@@ -55,7 +40,6 @@ async def upload_files(files: List[UploadFile] = File(...)):
             decoded_contents = contents.decode('utf-8', errors='ignore')
             print(file.filename)
             print(decoded_contents)
-
             bot_response = await get_gemini_response(decoded_contents)
 
             responses.append({
@@ -69,3 +53,32 @@ async def upload_files(files: List[UploadFile] = File(...)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading files: {e}")
+
+
+######################################################################################################################################################################################
+
+
+
+@app.post("/files_v2")
+async def upload_files(files: List[UploadFile] = File(...)):
+    try:
+        responses = []
+
+        for file in files:
+            contents = await file.read()
+            decoded_contents = contents.decode('utf-8', errors='ignore')
+
+            # Use the instance method correctly
+            bot_response = await gemini_v2.get_gemini_response(decoded_contents)
+
+            responses.append({
+                "filename": file.filename,
+                "response": bot_response
+            })
+
+        return {"message": "Upload successful", "data": responses}
+
+    except Exception as e:
+        # Fix the HTTPException syntax
+        raise HTTPException()
+
