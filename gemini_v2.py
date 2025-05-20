@@ -9,7 +9,7 @@ load_dotenv()
 #reads from .env file
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-peaked_very_long_prompt_engineering = """Act as a senior technical writer specializing in software documentation for developer audiences. Your task is to create comprehensive, clear, and engaging documentation in markdown format that could appear in professional README.md files or technical blog posts (like Medium or Dev.to).
+peaked_prompt_engineering = """Act as a senior technical writer specializing in software documentation for developer audiences. Your task is to create comprehensive, clear, and engaging documentation in markdown format that could appear in professional README.md files or technical blog posts (like Medium or Dev.to).
 
 Follow these guidelines for optimal output:
 
@@ -60,7 +60,7 @@ Respond ONLY with the markdown content.   """
 model = client.chats.create(
     model = "gemini-1.5-flash",
     config = types.GenerateContentConfig(
-        system_instruction = peaked_very_long_prompt_engineering)
+        system_instruction = peaked_prompt_engineering)
 )
 
 reminder = """ 
