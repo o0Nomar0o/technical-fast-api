@@ -1,3 +1,4 @@
+from fileinput import filename
 from http.client import HTTPException
 from pydantic import BaseModel
 from fastapi import FastAPI
@@ -62,23 +63,28 @@ async def upload_files(files: List[UploadFile] = File(...)):
 @app.post("/files_v2")
 async def upload_files(files: List[UploadFile] = File(...)):
     try:
-        responses = []
 
+        responses = []
+        combined_content = ""
+        fn = ""
         for file in files:
             contents = await file.read()
             decoded_contents = contents.decode('utf-8', errors='ignore')
+            combined_content += f"=== {file.filename} ===\n{decoded_contents}\n\n"
+            fn = file.filename
 
-            # Use the instance method correctly
-            bot_response = await gemini_v2.get_gemini_response(decoded_contents)
+        bot_response = await gemini_v2.get_gemini_response(combined_content)
 
-            responses.append({
-                "filename": file.filename,
-                "response": bot_response
-            })
+        # Create response
+        responses.append({
+            "filename": fn,
+            "response": bot_response
+        })
+
+        print(bot_response)
 
         return {"message": "Upload successful", "data": responses}
 
     except Exception as e:
-        # Fix the HTTPException syntax
         raise HTTPException()
 
