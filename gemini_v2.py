@@ -66,7 +66,7 @@ model = client.chats.create(
 reminder = """ 
 **Reminder:** Do not include self-critique, suggestions, or improvements. 
 Only return properly formatted Markdown documentation commentary.
-Include examples with code blocks where appropriate)
+Include examples with code blocks where appropriate.
 Follow the system_instruction, 1 to 5 strictly."""
 
 
