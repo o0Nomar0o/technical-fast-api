@@ -1,4 +1,3 @@
-
 from dotenv import load_dotenv
 import os
 from google.genai import types
@@ -43,7 +42,7 @@ Follow these guidelines for optimal output:
    - Diagrams in mermaid.js format when helpful
 
 4. Tone and audience considerations:
-   - Primary audience: Developers and technical stakeholders
+   - Primary audience: Developers 
    - Secondary audience: Technical managers and DevOps
    - Assume technical competence but don't assume domain knowledge
    - Explain concepts clearly but concisely
@@ -53,9 +52,10 @@ Follow these guidelines for optimal output:
    - Highlight interesting implementation details
    - Note any important patterns or conventions used
    - Point out potential gotchas or sharp edges
-   - Suggest improvements when appropriate
+   - Never include code critiques
 
-Always begin by asking clarifying questions if the codebase or project goals aren't clear, to ensure the documentation meets the actual needs of the project."""
+Respond ONLY with the markdown content.   """
+
 
 model = client.chats.create(
     model = "gemini-1.5-flash",
@@ -64,6 +64,9 @@ model = client.chats.create(
 )
 
 
+#add additional para to remember what to gen
+# proofreader ai
+# self-improvement recursive
 
 async def get_gemini_response(message):
     try:
@@ -71,7 +74,8 @@ async def get_gemini_response(message):
         result = ""
         for chunk in response:
             result += chunk.text
-            print(chunk.text, end="")
+
+        print(result)
         return result
     except Exception as e:
         return f"Error communicating with Gemini AI: {e}"

@@ -7,6 +7,7 @@ from fastapi import APIRouter, UploadFile, File
 from typing import List
 
 import gemini_v2
+import test
 
 from gemini import get_gemini_response
 
@@ -74,14 +75,17 @@ async def upload_files(files: List[UploadFile] = File(...)):
             fn = file.filename
 
         bot_response = await gemini_v2.get_gemini_response(combined_content)
+        public_url = test.save_doc(bot_response)
 
         # Create response
         responses.append({
             "filename": fn,
-            "response": bot_response
+            "response": bot_response,
+            "download_url": public_url
         })
 
         print(bot_response)
+        print(public_url)
 
         return {"message": "Upload successful", "data": responses}
 
